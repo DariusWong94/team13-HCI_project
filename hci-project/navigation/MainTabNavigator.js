@@ -1,40 +1,52 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import { MaterialCommunityIcons , AntDesign} from '@expo/vector-icons';
+import Colors from '../constants/Colors';
 
-import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
+import MealScreen from '../screens/MealScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+
+import meal1Screen from '../screens/meal1';
+import meal2Screen from '../screens/meal2';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
+},{
+  navigationOptions: {
+    title: 'Home'
+  }
 });
 
 HomeStack.navigationOptions = {
   tabBarLabel: 'Home',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
-      }
+    <MaterialCommunityIcons
+     name= "home"
+     size={26}
+     style={{ marginBottom: -3 }}
+     color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+     
     />
   ),
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
+const MealsStack = createStackNavigator({
+  Meals: MealScreen,
+  Meal1: meal1Screen,
+  Meal2: meal2Screen
 });
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+MealsStack.navigationOptions = {
+  tabBarLabel: 'Meals',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+    <MaterialCommunityIcons
+     name= "food-apple"
+     size={26}
+     style={{ marginBottom: -3 }}
+     color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+     
     />
   ),
 };
@@ -46,15 +58,18 @@ const SettingsStack = createStackNavigator({
 SettingsStack.navigationOptions = {
   tabBarLabel: 'Settings',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+    <AntDesign
+     name= "setting"
+     size={26}
+     style={{ marginBottom: -3 }}
+     color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+     
     />
   ),
 };
 
 export default createBottomTabNavigator({
   HomeStack,
-  LinksStack,
+  MealsStack,
   SettingsStack,
 });
