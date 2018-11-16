@@ -20,9 +20,7 @@
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
     "react-native-carousel-view": "^0.5.1",
-    "react-native-image-slideshow": "^1.0.1",
     "react-native-router-flux": "^4.0.6",
-    "react-native-swiper-flatlist": "^1.0.8",
     "react-navigation": "^2.18.2"
   },
   "devDependencies": {
