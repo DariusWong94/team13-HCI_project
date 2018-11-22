@@ -1,7 +1,7 @@
 import MealScreen from '../screens/MealScreen';
 
 const User = {
-  Users: [
+  meals: [
     {
       id: "1",
       mealLink:"Meal1",
@@ -63,10 +63,32 @@ const User = {
       text7: "Sodium: 200"
     },
   ],
-  MedicineRoute : function(e){
-    MealScreen({meallist:e})
-    //console.log(e)
-  }
+  workout: [
+    {
+      id: "1",
+      mealLink:"workout1",
+      uri: require('../videos/v1.mp4'),
+      text1: "Abs Workout",
+      text2: "You will get a nice 6packs after doing this workout",
+      text3: "Calories Burn: 190kcal",
+      text4: "Protein Burn: 200",
+      text5: "Carbs Burn: 200",
+      text6: "Fats Burn: 200",
+      text7: "Sodium Burn: 200"
+    },
+    {
+      id: "2",
+      mealLink:"workout2",
+      uri: require('../videos/v2.mp4'),
+      text1: "Chest Workout",
+      text2: "You will get a nice chest after doing this workout",
+      text3: "Calories Burn: 190kcal",
+      text4: "Protein Burn: 200",
+      text5: "Carbs Burn: 200",
+      text6: "Fats Burn: 200",
+      text7: "Sodium Burn: 200"
+    },
+  ],
 } 
 
 export default {

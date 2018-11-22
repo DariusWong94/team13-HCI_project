@@ -2,17 +2,13 @@ import React, { Component } from 'react';
 import { StyleSheet, Dimensions, Image, TouchableOpacity, AsyncStorage } from 'react-native';
 import { Body, Container, Text, View, CardItem } from "native-base";
 import User from '../constants/User';
-import { Button } from 'react-native-elements';
-import { MaterialCommunityIcons, AntDesign, FontAwesome, Entypo } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import CardStack, { Card } from 'react-native-card-stack-swiper';
-
-import FavouritesScreen from '../screens/FavouritesScreen'
-import { NavigationActions } from 'react-navigation';
 
 const { width } = Dimensions.get('window');
 const height = width * 0.8;
 
-export default class MealScreen extends React.Component {
+export default class MealScreen extends Component {
   static navigationOptions = {
     title: 'Meals',
   };
@@ -25,7 +21,7 @@ export default class MealScreen extends React.Component {
     }
   }
   onSwipedLeft(item) {
-    var name = User.User.Users[item].text1;
+    var name = User.User.meals[item].text1;
     //Remove from list if meal exist
     if (this.state.mealFavList.length != 0) {
       for (var i = 0; i < this.state.mealFavList.length; i++) {
@@ -35,17 +31,18 @@ export default class MealScreen extends React.Component {
         }
       }
     }
-    
+
     console.log("--------Remove meal----------")
-    console.log(this.state.mealFavList)
-    AsyncStorage.clear()
+    //console.log(this.state.mealFavList)
+    
+    AsyncStorage.removeItem("FavMeals");
     AsyncStorage.setItem('FavMeals', JSON.stringify(this.state.mealFavList), () => {
     });
 
   }
   onSwipedRight(item) {
-    var name = User.User.Users[item].text1;
-    var MealObj = User.User.Users[item]
+    var name = User.User.meals[item].text1;
+    var MealObj = User.User.meals[item]
     //add into list if meal does not exist
     if (this.state.mealFavList.length != 0) {
       for (var i = 0; i < this.state.mealFavList.length; i++) {
@@ -62,16 +59,17 @@ export default class MealScreen extends React.Component {
     }
     console.log("--------new meal----------")
     //console.log(this.state.mealFavList)
-    AsyncStorage.clear()
+    
+    AsyncStorage.removeItem("FavMeals");
     AsyncStorage.setItem('FavMeals', JSON.stringify(this.state.mealFavList), () => {
     });
 
   }
-  componentDidMount(){
-    AsyncStorage.clear()
+  componentDidMount() {
+    AsyncStorage.removeItem("FavMeals");
+    AsyncStorage.removeItem("FavWork");
   }
   render() {
-    const { navigate } = this.props.navigation;
     return (
       <Container>
         <View style={{
@@ -87,7 +85,7 @@ export default class MealScreen extends React.Component {
 
           >
             {
-              User.User.Users.map((item, i) => {
+              User.User.meals.map((item, i) => {
                 return (
                   <Card key={i} style={styles.card}>
                     <View style={{
