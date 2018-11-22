@@ -1,8 +1,8 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn add react-native-swiper
+  /usr/local/bin/node /usr/local/bin/yarn add react-native-card-stack-swiper
 
 PATH: 
-  /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files/Haskell Platform/8.4.3/lib/extralibs/bin:/mnt/c/Program Files/Haskell Platform/8.4.3/bin:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/iCLS:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/iCLS:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath_target_602065687:/mnt/c/ProgramData/Oracle/Java/javapath_target_602057484:/mnt/c/Program Files/Microsoft MPI/Bin:/mnt/c/Windows/System32:/mnt/c/Windows:/mnt/c/Windows/System32/wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:/mnt/c/Program Files/Microsoft SQL Server/130/Tools/Binn:/mnt/c/Program Files/dotnet:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/LLVM/bin:/mnt/c/Program Files/Java/jdk1.8.0_144/bin:/mnt/c/php:/mnt/c/HashiCorp/Vagrant/bin:/mnt/c/Program Files/nodejs:/mnt/c/Program Files (x86)/Yarn/bin:/mnt/c/Windows/System32/OpenSSH:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Program Files/Haskell Platform/8.4.3/mingw/bin:/mnt/c/Users/Ethan/AppData/Roaming/local/bin:/mnt/c/Users/Ethan/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/Ethan/AppData/Local/atom/bin:/mnt/c/Program Files/Java/jdk1.8.0_144/bin:/mnt/c/Users/Ethan/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/Ethan/AppData/Roaming/npm:/mnt/c/Users/Ethan/AppData/Local/Yarn/bin:/mnt/c/Program Files/Microsoft VS Code/bin:/mnt/c/Users/Ethan/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin
+  /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files/Haskell Platform/8.4.3/lib/extralibs/bin:/mnt/c/Program Files/Haskell Platform/8.4.3/bin:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/iCLS:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/iCLS:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath_target_602065687:/mnt/c/ProgramData/Oracle/Java/javapath_target_602057484:/mnt/c/Program Files/Microsoft MPI/Bin:/mnt/c/Windows/System32:/mnt/c/Windows:/mnt/c/Windows/System32/wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:/mnt/c/Program Files/Microsoft SQL Server/130/Tools/Binn:/mnt/c/Program Files/dotnet:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/LLVM/bin:/mnt/c/Program Files/Java/jdk1.8.0_144/bin:/mnt/c/php:/mnt/c/HashiCorp/Vagrant/bin:/mnt/c/Program Files/nodejs:/mnt/c/Program Files (x86)/Yarn/bin:/mnt/c/Windows/System32/OpenSSH:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Program Files/Haskell Platform/8.4.3/mingw/bin:/mnt/c/Users/Ethan/AppData/Roaming/local/bin:/mnt/c/Users/Ethan/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/Ethan/AppData/Local/atom/bin:/mnt/c/Program Files/Java/jdk1.8.0_144/bin:/mnt/c/Users/Ethan/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/Ethan/AppData/Roaming/npm:/mnt/c/Users/Ethan/AppData/Local/Yarn/bin:/mnt/c/Program Files/Microsoft VS Code/bin:/mnt/c/Users/Ethan/AppData/Local/Programs/Microsoft VS Code/bin
 
 Yarn version: 
   1.9.4
@@ -14,7 +14,17 @@ Platform:
   linux x64
 
 Trace: 
-  Error: ENOENT: no such file or directory, scandir '/mnt/c/Users/Ethan/Documents/hci-project/hci-project/node_modules/react-native-screens/android/src'
+  Error: connect EINVAL 104.16.27.35:443 - Local (0.0.0.0:0)
+      at Object._errnoException (util.js:992:11)
+      at _exceptionWithHostPort (util.js:1014:20)
+      at internalConnect (net.js:960:16)
+      at defaultTriggerAsyncIdScope (internal/async_hooks.js:284:19)
+      at emitLookup (net.js:1106:9)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:95912:29
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:95758:25
+      at RawTask.module.exports.RawTask.call (/usr/local/lib/node_modules/yarn/lib/cli.js:77396:19)
+      at flush (/usr/local/lib/node_modules/yarn/lib/cli.js:77478:29)
+      at _combinedTickCallback (internal/process/next_tick.js:131:7)
 
 npm manifest: 
   {
@@ -39,8 +49,11 @@ npm manifest:
       "react": "16.5.0",
       "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
       "react-native-carousel-view": "^0.5.1",
+      "react-native-dialog-input": "^1.0.5",
+      "react-native-elements": "^1.0.0-beta7",
       "react-native-image-slideshow": "^1.0.1",
       "react-native-router-flux": "^4.0.6",
+      "react-native-swipe-cards": "^0.1.1",
       "react-native-swiper-flatlist": "^1.0.8",
       "react-navigation": "^2.18.2"
     },
@@ -3786,6 +3799,10 @@ Lockfile:
     version "4.6.0"
     resolved "https://registry.yarnpkg.com/lodash.mapvalues/-/lodash.mapvalues-4.6.0.tgz#1bafa5005de9dd6f4f26668c30ca37230cc9689c"
   
+  lodash.merge@^4.6.1:
+    version "4.6.1"
+    resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.1.tgz#adc25d9cb99b9391c59624f379fbba60d7111d54"
+  
   lodash.omit@^4.5.0:
     version "4.5.0"
     resolved "https://registry.yarnpkg.com/lodash.omit/-/lodash.omit-4.5.0.tgz#6eb19ae5a1ee1dd9df0b969e66ce0b7fa30b5e60"
@@ -3813,6 +3830,10 @@ Lockfile:
   lodash.throttle@^4.1.1:
     version "4.1.1"
     resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  
+  lodash.times@^4.3.2:
+    version "4.3.2"
+    resolved "https://registry.yarnpkg.com/lodash.times/-/lodash.times-4.3.2.tgz#3e1f2565c431754d54ab57f2ed1741939285ca1d"
   
   lodash.zipobject@^4.1.3:
     version "4.1.3"
@@ -4505,6 +4526,10 @@ Lockfile:
     dependencies:
       mimic-fn "^1.0.0"
   
+  opencollective-postinstall@^2.0.0:
+    version "2.0.1"
+    resolved "https://registry.yarnpkg.com/opencollective-postinstall/-/opencollective-postinstall-2.0.1.tgz#798e83e168f7b91949061c2683f762af747f17cc"
+  
   opencollective@^1.0.3:
     version "1.0.3"
     resolved "https://registry.yarnpkg.com/opencollective/-/opencollective-1.0.3.tgz#aee6372bc28144583690c3ca8daecfc120dd0ef1"
@@ -4915,6 +4940,10 @@ Lockfile:
       react-mixin "^3.0.5"
       react-timer-mixin "^0.13.3"
   
+  react-native-dialog-input@^1.0.5:
+    version "1.0.5"
+    resolved "https://registry.yarnpkg.com/react-native-dialog-input/-/react-native-dialog-input-1.0.5.tgz#0c1659110b9b9c9f4f1acb6b670c0559f44da948"
+  
   react-native-dismiss-keyboard@1.0.0:
     version "1.0.0"
     resolved "https://registry.yarnpkg.com/react-native-dismiss-keyboard/-/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"
@@ -4943,6 +4972,15 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/react-native-easy-grid/-/react-native-easy-grid-0.2.0.tgz#4718031aa1baaa2613b829fc807da288eb0d2797"
     dependencies:
       lodash "^4.11.1"
+  
+  react-native-elements@^1.0.0-beta7:
+    version "1.0.0-beta7"
+    resolved "https://registry.yarnpkg.com/react-native-elements/-/react-native-elements-1.0.0-beta7.tgz#d732affc905079033a8b53343587f7c1dbc59834"
+    dependencies:
+      lodash.merge "^4.6.1"
+      lodash.times "^4.3.2"
+      opencollective-postinstall "^2.0.0"
+      prop-types "^15.5.8"
   
   react-native-gesture-handler@1.0.9:
     version "1.0.9"
@@ -5018,6 +5056,13 @@ Lockfile:
       color "^2.0.1"
       lodash "^4.16.6"
       pegjs "^0.10.0"
+  
+  react-native-swipe-cards@^0.1.1:
+    version "0.1.1"
+    resolved "https://registry.yarnpkg.com/react-native-swipe-cards/-/react-native-swipe-cards-0.1.1.tgz#25a31b450f2616f3a25a101c9fc37ccbb2deb3e2"
+    dependencies:
+      clamp "^1.0.1"
+      prop-types "^15.6.0"
   
   react-native-swiper-flatlist@^1.0.8:
     version "1.0.8"

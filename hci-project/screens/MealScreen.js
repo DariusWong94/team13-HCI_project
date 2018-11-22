@@ -1,131 +1,212 @@
-import React from 'react';
-import { StyleSheet, Image, Dimensions, TouchableHighlight } from 'react-native';
-import { Container, Content, Left, Body, Text, CardItem, Card, Thumbnail, View } from "native-base";
+import React, { Component } from 'react';
+import { StyleSheet, Dimensions, Image, TouchableOpacity, AsyncStorage } from 'react-native';
+import { Body, Container, Text, View, CardItem } from "native-base";
+import User from '../constants/User';
+import { Button } from 'react-native-elements';
+import { MaterialCommunityIcons, AntDesign, FontAwesome, Entypo } from '@expo/vector-icons';
+import CardStack, { Card } from 'react-native-card-stack-swiper';
+
+import FavouritesScreen from '../screens/FavouritesScreen'
+import { NavigationActions } from 'react-navigation';
 
 const { width } = Dimensions.get('window');
-const height = width * 0.8
+const height = width * 0.8;
 
 export default class MealScreen extends React.Component {
   static navigationOptions = {
     title: 'Meals',
   };
 
-  render() {
+  constructor(props) {
+    super(props);
+    //console.log(this.props.meallist)
+    this.state = {
+      mealFavList: [],
+    }
+  }
+  onSwipedLeft(item) {
+    var name = User.User.Users[item].text1;
+    //Remove from list if meal exist
+    if (this.state.mealFavList.length != 0) {
+      for (var i = 0; i < this.state.mealFavList.length; i++) {
+        if (this.state.mealFavList[i].text1 == name) {
+          this.state.mealFavList.splice(i, 1);
+          break;
+        }
+      }
+    }
+    
+    console.log("--------Remove meal----------")
+    console.log(this.state.mealFavList)
+    AsyncStorage.clear()
+    AsyncStorage.setItem('FavMeals', JSON.stringify(this.state.mealFavList), () => {
+    });
 
+  }
+  onSwipedRight(item) {
+    var name = User.User.Users[item].text1;
+    var MealObj = User.User.Users[item]
+    //add into list if meal does not exist
+    if (this.state.mealFavList.length != 0) {
+      for (var i = 0; i < this.state.mealFavList.length; i++) {
+        if (this.state.mealFavList[i].text1 == name) {
+          break;
+        }
+        else if (i + 1 == this.state.mealFavList.length) {
+          this.state.mealFavList = this.state.mealFavList.concat(MealObj);
+        }
+      }
+    }
+    else {
+      this.state.mealFavList = this.state.mealFavList.concat(MealObj);
+    }
+    console.log("--------new meal----------")
+    //console.log(this.state.mealFavList)
+    AsyncStorage.clear()
+    AsyncStorage.setItem('FavMeals', JSON.stringify(this.state.mealFavList), () => {
+    });
+
+  }
+  componentDidMount(){
+    AsyncStorage.clear()
+  }
+  render() {
+    const { navigate } = this.props.navigation;
     return (
       <Container>
-        <Content padder>
-          <TouchableHighlight onPress={() => this.props.navigation.navigate('Meal1')}>
-            <Card style={{ flex: 0 }}>
-              <View style={styles.container}>
-                <Image style={{ flex: 1, width: '100%', height: 200 }} source={require('../images/meals/Smoked_Brisket_with_Zesty_Barbecue_Sauce.jpg')} />
-              </View>
-              <CardItem>
-                <Body>
-                  <Text>Smoked Brisket with Zesty Barbecue Sauce</Text>
-                  <Text note>Summary: Tasty Chicken rice with curry</Text>
-                  <Text note>Calories: 190kcal</Text>
-                  <Text note>Protein: 200</Text>
-                  <Text note>Carbs: </Text>
-                  <Text note>Fats: 200</Text>
-                  <Text note>Sodium: 200</Text>
-                </Body>
-              </CardItem>
-            </Card>
-          </TouchableHighlight>
+        <View style={{
+          flex: 1,
+          flexDirection: 'row',
+        }}>
 
-          <TouchableHighlight onPress={() => this.props.navigation.navigate('Meal2')}>
-            <Card style={{ flex: 0 }}>
+          <CardStack ref={swiper => { this.swiper = swiper }}
+            renderNoMoreCards={() => <Text style={{ fontWeight: '700', fontSize: 18, color: 'gray', marginLeft: 130, marginTop: "auto", marginBottom: "auto" }}>No more Meals :(</Text>}
+            onSwipedLeft={(item) => this.onSwipedLeft(item)}
+            onSwipedRight={(item) => this.onSwipedRight(item)}
+            verticalSwipe={false}
 
-              <View style={styles.container}>
-                <Image style={{ flex: 1, width: '100%', height: 200 }} source={require('../images/meals/carrot_soup.jpg')} />
-              </View>
-              <CardItem>
-                <Body>
-                  <Text>Carrot Soup</Text>
-                  <Text note>Summary: Tasty Chicken rice with curry</Text>
-                  <Text note>Calories: 190kcal</Text>
-                  <Text note>Protein: 200</Text>
-                  <Text note>Carbs: </Text>
-                  <Text note>Fats: 200</Text>
-                  <Text note>Sodium: 200</Text>
-                </Body>
-              </CardItem>
-            </Card>
-          </TouchableHighlight>
+          >
+            {
+              User.User.Users.map((item, i) => {
+                return (
+                  <Card key={i} style={styles.card}>
+                    <View style={{
+                      flex: 1,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                      <Image style={{ height: "100%", width: "100%" }} source={item.uri} />
+                    </View>
+                    <CardItem>
 
-        <TouchableHighlight onPress={() => this.props.navigation.navigate('Meal2')}>
-          <Card style={{ flex: 0 }}>
-            <View style={styles.container}>
-              <Image style={{ flex: 1, width: '100%', height: 200 }} source={require('../images/meals/chocolate_banana_protein_smoothie.jpg')} />
-            </View>
-            <CardItem>
-              <Body>
-                <Text>Chocolate Banana Protein Smoothie</Text>
-                <Text note>Summary: Tasty Chicken rice with curry</Text>
-                <Text note>Calories: 190kcal</Text>
-                <Text note>Protein: 200</Text>
-                <Text note>Carbs: </Text>
-                <Text note>Fats: 200</Text>
-                <Text note>Sodium: 200</Text>
-              </Body>
-            </CardItem>
-          </Card>
-          </TouchableHighlight>
+                      <Body>
+                        <Text>{String(item.text1)}</Text>
+                        <Text note>{item.text2}</Text>
+                        <Text note>{item.text3}</Text>
+                        <Text note>{item.text4}</Text>
+                        <Text note>{item.text5}</Text>
+                        <Text note>{item.text6}</Text>
+                        <Text note>{item.text7}</Text>
+                      </Body>
+                    </CardItem>
+                  </Card>
+                )
+              })
+            }
+          </CardStack>
 
-          
-        <TouchableHighlight onPress={() => this.props.navigation.navigate('Meal2')}>
-          <Card style={{ flex: 0 }}>
-            <View style={styles.container}>
-              <Image style={{ flex: 1, width: '100%', height: 200 }} source={require('../images/meals/Roast_with_Spicy_Potatoes.jpg')} />
-            </View>
-            <CardItem>
-              <Body>
-                <Text>Roast with Spicy Potatoes</Text>
-                <Text note>Summary: Tasty Chicken rice with curry</Text>
-                <Text note>Calories: 190kcal</Text>
-                <Text note>Protein: 200</Text>
-                <Text note>Carbs: </Text>
-                <Text note>Fats: 200</Text>
-                <Text note>Sodium: 200</Text>
-              </Body>
-            </CardItem>
-          </Card>
-          </TouchableHighlight>
+        </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={[styles.button, styles.red]} onPress={() => {
+            this.swiper.swipeLeft();
+            this.onSwipedLeft;
+          }}>
+            <Entypo
+              name="thumbs-down"
+              size={35}
+              style={{ marginBottom: -3 }}
+              color="red"
 
-          <TouchableHighlight onPress={() => this.props.navigation.navigate('Meal2')}>
-          <Card style={{ flex: 0 }}>
-            <View style={styles.container}>
-              <Image style={{ flex: 1, width: '100%', height: 200 }} source={require('../images/meals/Black_Bean_Chili.jpg')} />
-            </View>
-            <CardItem>
-            <Body>
-              <Text>Black Bean Chili</Text>
-              <Text note>Summary: Tasty Chicken rice with curry</Text>
-              <Text note>Calories: 190kcal</Text>
-              <Text note>Protein: 200</Text>
-              <Text note>Carbs: </Text>
-              <Text note>Fats: 200</Text>
-              <Text note>Sodium: 200</Text>
-            </Body>
-            </CardItem>
-          </Card>
-          </TouchableHighlight>
-        </Content>
-      </Container >
+            />
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.button, styles.orange]} onPress={() => {
+            this.swiper.goBackFromLeft();
+            this.onRevert;
+          }}>
+            <MaterialCommunityIcons
+              name="reload"
+              size={26}
+              color="blue"
+
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[styles.button, styles.green]} onPress={() => {
+            this.swiper.swipeRight();
+            this.onSwipedRight;
+          }}>
+            <Entypo
+              name="thumbs-up"
+              size={35}
+              color="green"
+
+            />
+          </TouchableOpacity>
+        </View>
+
+      </Container>
     );
   }
 }
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  card: {
+    width: width,
+    height: width * 1.25,
+  },
+
+  buttonContainer: {
+    width: "75%",
+    marginLeft: "auto",
+    marginRight: "auto",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+  },
+  button: {
+    shadowColor: 'rgba(0,0,0,0.3)',
+    shadowOffset: {
+      width: 0,
+      height: 1
+    },
+    shadowOpacity: 0.5,
+    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-
+    zIndex: 0,
   },
-  image: {
-    width,
-    height,
+  orange: {
+    width: 55,
+    height: 55,
+    borderWidth: 6,
+    borderColor: 'rgb(246,190,66)',
+    borderWidth: 4,
+    borderRadius: 55,
+    marginTop: -15
   },
+  green: {
+    width: 75,
+    height: 75,
+    backgroundColor: '#fff',
+    borderRadius: 75,
+    borderWidth: 6,
+    borderColor: '#01df8a',
+  },
+  red: {
+    width: 75,
+    height: 75,
+    backgroundColor: '#fff',
+    borderRadius: 75,
+    borderWidth: 6,
+    borderColor: '#fd267d',
+  }
 });
