@@ -17,6 +17,12 @@ import meal3Screen from '../screens/meal3';
 import meal4Screen from '../screens/meal4';
 import meal5Screen from '../screens/meal5';
 
+import workout1Screen from '../screens/workout/workout1';
+import workout2Screen from '../screens/workout/workout2';
+import workout3Screen from '../screens/workout/workout3';
+import workout4Screen from '../screens/workout/workout4';
+import workout5Screen from '../screens/workout/workout5';
+
 
 
 const MealsStack = createStackNavigator({
@@ -62,6 +68,12 @@ const FavouritesStack = createStackNavigator({
   Meal3: meal3Screen,
   Meal4: meal4Screen,
   Meal5: meal5Screen,
+
+  Workout1: workout1Screen,
+  Workout2: workout2Screen,
+  Workout3: workout3Screen,
+  Workout4: workout4Screen,
+  Workout5: workout5Screen,
 });
 
 FavouritesStack.navigationOptions = {

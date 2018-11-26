@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Dimensions, Image, TouchableOpacity, AsyncStorage } from 'react-native';
+import { StyleSheet, Dimensions, Image, TouchableOpacity, AsyncStorage,Vibration } from 'react-native';
 import { Body, Container, Text, View, CardItem } from "native-base";
 import User from '../constants/User';
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
@@ -58,7 +58,7 @@ export default class WorkoutScreen extends React.Component {
     }
     console.log("--------new meal----------")
     //console.log(this.state.WOFavList)
-       
+    Vibration.vibrate(200);
     AsyncStorage.removeItem('FavWork');
     AsyncStorage.setItem('FavWork', JSON.stringify(this.state.WOFavList), () => {
     });

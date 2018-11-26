@@ -66,7 +66,7 @@ const User = {
   workout: [
     {
       id: "1",
-      mealLink:"workout1",
+      workoutLink:"Workout1",
       uri: require('../videos/v1.mp4'),
       text1: "Abs Workout",
       text2: "You will get a nice 6packs after doing this workout",
@@ -78,7 +78,7 @@ const User = {
     },
     {
       id: "2",
-      mealLink:"workout2",
+      workoutLink:"Workout2",
       uri: require('../videos/v2.mp4'),
       text1: "Chest Workout",
       text2: "You will get a nice chest after doing this workout",

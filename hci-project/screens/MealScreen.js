@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions, Image, TouchableOpacity, AsyncStorage } from 'react-native';
+import { StyleSheet, Dimensions, Image, TouchableOpacity, AsyncStorage ,Vibration} from 'react-native';
 import { Body, Container, Text, View, CardItem } from "native-base";
 import User from '../constants/User';
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
@@ -59,7 +59,7 @@ export default class MealScreen extends Component {
     }
     console.log("--------new meal----------")
     //console.log(this.state.mealFavList)
-    
+    Vibration.vibrate(200);
     AsyncStorage.removeItem("FavMeals");
     AsyncStorage.setItem('FavMeals', JSON.stringify(this.state.mealFavList), () => {
     });
