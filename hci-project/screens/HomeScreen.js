@@ -15,7 +15,6 @@ export default class HomeScreen extends Component {
     this.state = {
       modalTextState: "",
       modalVisible: false,
-      age: 0,
       Current: {
         Age: 0,
         Gender: "",
@@ -24,7 +23,6 @@ export default class HomeScreen extends Component {
         Weight: 0,
       },
       Target: {
-        Age: 0,
         BMI: 0,
         Height: 0,
         Weight: 0,
@@ -129,7 +127,7 @@ export default class HomeScreen extends Component {
       this.state.Target.Weight = text;
     }
     else if (this.state.displayHeightWeight == "Enter new Age") {
-      this.state.age = text;
+      this.state.Current.age = text;
     }
 
 
@@ -158,7 +156,10 @@ export default class HomeScreen extends Component {
             this.setState({
               Current: JSON.parse(result)
             })
-            console.log(result)
+            console.log(this.state.Current.Age)
+            
+            this.checkSize();
+            this.forceUpdate();
           }
           AsyncStorage.removeItem("currentValues");
         }).catch((response) => {
@@ -235,7 +236,7 @@ export default class HomeScreen extends Component {
           <Image source={this.state.image} style={{ height: height, marginLeft: "auto", marginRight: "auto" }} resizeMode="contain" />
 
           <TouchableOpacity onPress={() => this.openModal("Age")} style={{ flexDirection: 'column', alignItems: 'center' }}>
-            <Text style={{ fontWeight: 'bold', marginLeft: "auto", marginRight: "auto" }}>Age: {this.state.age}</Text>
+            <Text style={{ fontWeight: 'bold', marginLeft: "auto", marginRight: "auto" }}>Age: {this.state.Current.Age}</Text>
           </TouchableOpacity>
 
           <Text style={{ fontWeight: 'bold', marginLeft: "auto", marginRight: "auto", marginTop: 40 }}>Current Status</Text>

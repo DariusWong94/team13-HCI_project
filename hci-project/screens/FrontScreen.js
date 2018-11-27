@@ -14,7 +14,6 @@ export default class FrontScreen extends Component {
     this.state = {
       modalTextState: "",
       modalVisible: false,
-      age: 0,
       Current: {
         Age: 0,
         Gender: "",
