@@ -13,3 +13,8 @@
 1. On Android devices, open the expo app and scan the QR code displayed in the console using the app.
 3. On IOS devices simply open the QR code scanner and scan the QR code displayed in the console. 
 4. Click on the notification to open app.
+
+##Credits:
+Darius: Dariuswon94@gmail.com
+Ethan: weiqiang1994.cwq@gmail.com
+Jovi: Joviyeo@gmail.com
