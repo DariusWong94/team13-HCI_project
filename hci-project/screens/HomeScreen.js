@@ -1,30 +1,62 @@
 import React, { Component } from 'react';
-import { StyleSheet, Image, View, TouchableOpacity, Modal, TouchableHighlight, TextInput, Text, KeyboardAvoidingView } from 'react-native';
+import { Dimensions, StyleSheet, Image, View, TouchableOpacity, Modal, TouchableHighlight, TextInput, Text, KeyboardAvoidingView, AsyncStorage } from 'react-native';
 import { Container, Button, Content, Thumbnail } from "native-base";
+import { Permissions, Notifications } from 'expo';
+
+const { width } = Dimensions.get('window');
+const height =  Dimensions.get('window').height * 0.40;
 
 export default class HomeScreen extends Component {
   static navigationOptions = {
     title: 'Profile',
   };
-
   constructor(props) {
     super(props);
     this.state = {
       modalTextState: "",
       modalVisible: false,
+      age: 0,
       Current: {
+        Age: 0,
+        Gender: "",
         BMI: 0,
         Height: 0,
-        Weight:0,
+        Weight: 0,
       },
       Target: {
+        Age: 0,
         BMI: 0,
         Height: 0,
         Weight: 0,
       },
       displayHeightWeight: "Enter new Height (CM)",
+      image: require("../images/slimmer.png"),
     };
   }
+
+  checkSize() {
+    if (this.state.Current.BMI >= 25) {
+      //fat fuck obese
+      this.setState({
+        image: require("../images/fat.png")
+      })
+    }
+    else if (this.state.Current.BMI < 25 && this.state.Current.BMI > 20) {
+      //overweight
+      this.setState({
+        image: require("../images/slim.png")
+      })
+    }
+    else if (this.state.Current.BMI < 20) {
+      //normal
+      this.setState({
+        image: require("../images/slimmer.png")
+      })
+    }
+
+    this.forceUpdate();
+  }
+
   openModal(data) {
     //console.log(data)
     if (data == "CurrentHeight") {
@@ -37,16 +69,21 @@ export default class HomeScreen extends Component {
         displayHeightWeight: "Enter new Current Weight (KG)"
       })
     }
-    else if (data == "TargetHeight") { 
+    else if (data == "TargetHeight") {
       this.setState({
         displayHeightWeight: "Enter new Target Height (CM)"
       })
     }
-    else if (data == "TargetWeight") { 
+    else if (data == "TargetWeight") {
       this.setState({
         displayHeightWeight: "Enter new Target Weight (KG)"
       })
-    }    
+    }
+    else if (data == "Age") {
+      this.setState({
+        displayHeightWeight: "Enter new Age"
+      })
+    }
     this.setState({ modalVisible: true });
   }
 
@@ -54,18 +91,19 @@ export default class HomeScreen extends Component {
     this.setState({ modalVisible: false });
   }
 
-  curBMICal(){
-    var curHeight = this.state.Current.Height/100;
-    var curWeight= this.state.Current.Weight;
-   
+  curBMICal() {
+    var curHeight = this.state.Current.Height / 100;
+    var curWeight = this.state.Current.Weight;
+
     // bmi = kg / height(m)* height(m)
     var curBMI = (curWeight) / (curHeight * curHeight);
     this.state.Current.BMI = curBMI.toFixed(2);
+    this.checkSize();
   }
 
-  tarBMICal(){
-    var tarHeight = this.state.Target.Height/100;
-    var tarWeight= this.state.Target.Weight;
+  tarBMICal() {
+    var tarHeight = this.state.Target.Height / 100;
+    var tarWeight = this.state.Target.Weight;
 
     var tarBMI = (tarWeight) / (tarHeight * tarHeight);
     this.state.Target.BMI = tarBMI.toFixed(2);
@@ -79,29 +117,76 @@ export default class HomeScreen extends Component {
   handleOnChange = (text) => {
 
     if (this.state.displayHeightWeight == "Enter new Current Height (CM)") {
-        this.state.Current.Height = text;        
+      this.state.Current.Height = text;
     }
     else if (this.state.displayHeightWeight == "Enter new Current Weight (KG)") {
       this.state.Current.Weight = text;
     }
-    else if (this.state.displayHeightWeight == "Enter new Target Height (CM)") { 
+    else if (this.state.displayHeightWeight == "Enter new Target Height (CM)") {
       this.state.Target.Height = text;
     }
-    else if (this.state.displayHeightWeight =="Enter new Target Weight (KG)") { 
+    else if (this.state.displayHeightWeight == "Enter new Target Weight (KG)") {
       this.state.Target.Weight = text;
-    }   
-    
-    if(this.state.Current.Height != 0 && this.state.Current.Weight !=0){
+    }
+    else if (this.state.displayHeightWeight == "Enter new Age") {
+      this.state.age = text;
+    }
+
+
+    if (this.state.Current.Height != 0 && this.state.Current.Weight != 0) {
       this.curBMICal();
     }
 
-    if(this.state.Target.Height != 0 && this.state.Target.Weight !=0){
+    if (this.state.Target.Height != 0 && this.state.Target.Weight != 0) {
       this.tarBMICal();
     }
 
   }
+  componentWillUnmount() {
+    this.didFocusListener.remove();
+    this.didFocusListener1.remove();
+  }
+
+
+  componentDidMount() {
+    this.didFocusListener = this.props.navigation.addListener(
+      'didFocus',
+      () => {
+
+        AsyncStorage.getItem('currentValues').then((result) => {
+          if (result != null) {
+            this.setState({
+              Current: JSON.parse(result)
+            })
+            console.log(result)
+          }
+          AsyncStorage.removeItem("currentValues");
+        }).catch((response) => {
+          console.log(response)
+        })
+      }
+    )
+    this.didFocusListener1 = this.props.navigation.addListener(
+      'didFocus',
+      () => {
+
+        AsyncStorage.getItem('targetValues').then((result) => {
+          if (result != null) {
+            this.setState({
+              Target: JSON.parse(result)
+            })
+            console.log(result)
+          }
+          AsyncStorage.removeItem("targetValues");
+        }).catch((response) => {
+          console.log(response)
+        })
+      }
+    )
+  }
 
   render() {
+
     return (
       <Container>
         <Content padder>
@@ -147,48 +232,55 @@ export default class HomeScreen extends Component {
             </Modal>
 
           </KeyboardAvoidingView>
-          <Image source={require('../images/fat.png')} style={{ height: 400, marginLeft: "auto", marginRight: "auto" }} resizeMode="contain" />
-          <Text style={{ fontWeight: 'bold', marginLeft: "auto", marginRight: "auto" }}>Age: 15</Text>
-          <Text style={{ fontWeight: 'bold', marginLeft: "auto", marginRight: "auto", marginTop: 40 }}>Current</Text>
+          <Image source={this.state.image} style={{ height: height, marginLeft: "auto", marginRight: "auto" }} resizeMode="contain" />
+
+          <TouchableOpacity onPress={() => this.openModal("Age")} style={{ flexDirection: 'column', alignItems: 'center' }}>
+            <Text style={{ fontWeight: 'bold', marginLeft: "auto", marginRight: "auto" }}>Age: {this.state.age}</Text>
+          </TouchableOpacity>
+
+          <Text style={{ fontWeight: 'bold', marginLeft: "auto", marginRight: "auto", marginTop: 40 }}>Current Status</Text>
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-evenly', }}>
-            <View style={{ marginLeft: "auto", marginRight: "auto" ,  flexDirection: 'column',  alignItems: 'center'}}>
+
+            <View style={{ marginLeft: "auto", marginRight: "auto" }}>
+              <TouchableOpacity onPress={() => this.openModal("CurrentHeight")} style={{ flexDirection: 'column', alignItems: 'center' }}>
+                <Thumbnail medium source={require('../images/height.png')} resizeMode="contain" />
+                <Text >{this.state.Current.Height} cm</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={{ marginLeft: "auto", marginRight: "auto", flexDirection: 'column', alignItems: 'center' }}>
               <Thumbnail medium source={require('../images/bmi.png')} resizeMode="contain" />
               <Text >{this.state.Current.BMI}</Text>
             </View>
 
             <View style={{ marginLeft: "auto", marginRight: "auto" }}>
-              <TouchableOpacity onPress={() => this.openModal("CurrentHeight")} style={{ flexDirection: 'column',  alignItems: 'center'}}>
-                <Thumbnail medium source={require('../images/height.png')} resizeMode="contain" />
-                <Text >{this.state.Current.Height} cm</Text>
-              </TouchableOpacity>
-
-            </View>
-            <View style={{ marginLeft: "auto", marginRight: "auto" }}>
-              <TouchableOpacity onPress={() => this.openModal("CurrentWeight")} style={{ flexDirection: 'column',  alignItems: 'center'}}>
+              <TouchableOpacity onPress={() => this.openModal("CurrentWeight")} style={{ flexDirection: 'column', alignItems: 'center' }}>
                 <Thumbnail medium source={require('../images/weight.png')} resizeMode="contain" />
                 <Text >{this.state.Current.Weight} kg</Text>
               </TouchableOpacity>
             </View>
           </View>
-          <Text style={{ fontWeight: 'bold', marginLeft: "auto", marginRight: "auto", marginTop: 40 }}>Target</Text>
+          <Text style={{ fontWeight: 'bold', marginLeft: "auto", marginRight: "auto", marginTop: 40 }}>Target Status</Text>
           <View style={{
             flex: 1,
             flexDirection: 'row',
             justifyContent: 'space-evenly',
           }}>
 
-            <View style={{ marginLeft: "auto", marginRight: "auto",  flexDirection: 'column',  alignItems: 'center'}}>
-              <Thumbnail medium source={require('../images/bmi.png')} resizeMode="contain" />
-              <Text >{this.state.Target.BMI}</Text>
-            </View>
             <View style={{ marginLeft: "auto", marginRight: "auto" }} >
-              <TouchableOpacity onPress={() => this.openModal("TargetHeight")} style={{ flexDirection: 'column',  alignItems: 'center'}}>
+              <TouchableOpacity onPress={() => this.openModal("TargetHeight")} style={{ flexDirection: 'column', alignItems: 'center' }}>
                 <Thumbnail medium source={require('../images/height.png')} resizeMode="contain" />
                 <Text >{this.state.Target.Height} cm</Text>
               </TouchableOpacity>
             </View>
+
+            <View style={{ marginLeft: "auto", marginRight: "auto", flexDirection: 'column', alignItems: 'center' }}>
+              <Thumbnail medium source={require('../images/bmi.png')} resizeMode="contain" />
+              <Text >{this.state.Target.BMI}</Text>
+            </View>
+
             <View style={{ marginLeft: "auto", marginRight: "auto" }}>
-              <TouchableOpacity onPress={() => this.openModal("TargetWeight")} style={{ flexDirection: 'column',  alignItems: 'center'}}>
+              <TouchableOpacity onPress={() => this.openModal("TargetWeight")} style={{ flexDirection: 'column', alignItems: 'center' }}>
                 <Thumbnail medium source={require('../images/weight.png')} resizeMode="contain" />
                 <Text>{this.state.Target.Weight} kg</Text>
               </TouchableOpacity>

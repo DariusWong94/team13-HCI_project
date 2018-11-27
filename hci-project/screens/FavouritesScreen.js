@@ -17,10 +17,7 @@ export default class FavouritesScreen extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    this.didFocusListener.remove();
-    this.didFocusListener2.remove();
-  }
+  
   handleLongPress(item , mw) {
     Vibration.vibrate(200)
     console.log(mw)
@@ -66,7 +63,10 @@ onRemoveWorkoutFav(item) {
     this.forceUpdate();
     console.log(this.state.favouriteml);
   }
-
+  componentWillUnmount() {
+    this.didFocusListener.remove();
+    this.didFocusListener2.remove();
+  }
   componentDidMount() {
     this.didFocusListener = this.props.navigation.addListener(
       'didFocus',
@@ -77,6 +77,7 @@ onRemoveWorkoutFav(item) {
             this.setState({
               favouriteml: JSON.parse(result)
             })
+            console.log(result)
           }
           AsyncStorage.removeItem("FavMeals");
         }).catch((response) => {
@@ -92,6 +93,7 @@ onRemoveWorkoutFav(item) {
             this.setState({
               favouritem2: JSON.parse(result)
             })
+            console.log(result)
           }
           AsyncStorage.removeItem("FavWork");
         }).catch((response) => {

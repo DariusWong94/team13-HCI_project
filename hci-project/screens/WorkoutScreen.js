@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Dimensions, Image, TouchableOpacity, AsyncStorage,Vibration } from 'react-native';
+import { StyleSheet, Dimensions, Image, TouchableOpacity, AsyncStorage, Vibration, Animated } from 'react-native';
 import { Body, Container, Text, View, CardItem } from "native-base";
 import User from '../constants/User';
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
@@ -17,6 +17,8 @@ export default class WorkoutScreen extends React.Component {
     //console.log(this.props.meallist)
     this.state = {
       WOFavList: [],
+      like: 0,
+      dislike: 0,
     }
 
   }
@@ -34,6 +36,7 @@ export default class WorkoutScreen extends React.Component {
 
     console.log("--------Remove meal----------")
     console.log(this.state.WOFavList)
+    this.dislikeTimeout()
     AsyncStorage.removeItem('FavWork');
     AsyncStorage.setItem('FavWork', JSON.stringify(this.state.WOFavList), () => {
     });
@@ -59,19 +62,42 @@ export default class WorkoutScreen extends React.Component {
     console.log("--------new meal----------")
     //console.log(this.state.WOFavList)
     Vibration.vibrate(200);
+    this.likeTimeout();
     AsyncStorage.removeItem('FavWork');
     AsyncStorage.setItem('FavWork', JSON.stringify(this.state.WOFavList), () => {
     });
 
   }
+
+  likeTimeout() {
+    this.state.like = 1;
+    console.log(this.state.like)
+    setTimeout(() => { this.setState({ like: 0 }) }, 500);
+    this.forceUpdate();
+  }
+
+  dislikeTimeout() {
+    this.state.dislike = 1;
+    setTimeout(() => { this.setState({ dislike: 0 }) }, 500);
+    this.forceUpdate();
+  }
+
+
   componentDidMount() {
-    
+
     AsyncStorage.removeItem('FavWork');
   }
   render() {
     return (
-      <Container>
-        <View style={{ flex: 1, flexDirection: 'row' }}>
+      <Container style={{ flex: 1, flexDirection: "column", justifyContent: "space-between" }}>
+        <View>
+          <Animated.View style={{ opacity: this.state.like, transform: [{ rotate: '-30deg' }], position: 'absolute', top: 50, left: 40, zIndex: 1000 }}>
+            <Text style={{ borderWidth: 1, borderColor: 'green', color: 'green', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
+          </Animated.View>
+          <Animated.View style={{ opacity: this.state.dislike, transform: [{ rotate: '30deg' }], position: 'absolute', top: 50, right: 40, zIndex: 1000 }}>
+            <Text style={{ borderWidth: 1, borderColor: 'red', color: 'red', fontSize: 32, fontWeight: '800', padding: 10 }}>NOPE</Text>
+          </Animated.View>
+
           <CardStack ref={swiper => { this.swiper = swiper }}
             renderNoMoreCards={() => <Text style={{ fontWeight: '700', fontSize: 18, color: 'gray', marginLeft: 130 }}>No more Workout :(</Text>}
             onSwipedLeft={(item) => this.onSwipedLeft(item)}
@@ -109,42 +135,18 @@ export default class WorkoutScreen extends React.Component {
           </CardStack>
 
         </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={[styles.button, styles.red]} onPress={() => {
-            this.swiper.swipeLeft();
-            this.onSwipedLeft;
-          }}>
-            <Entypo
-              name="thumbs-down"
-              size={35}
-              style={{ marginBottom: -3 }}
-              color="red"
-
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.button, styles.orange]} onPress={() => {
-            this.swiper.goBackFromLeft();
-            this.onRevert;
-          }}>
-            <MaterialCommunityIcons
-              name="reload"
-              size={26}
-              color="blue"
-
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={[styles.button, styles.green]} onPress={() => {
-            this.swiper.swipeRight();
-            this.onSwipedRight;
-          }}>
-            <Entypo
-              name="thumbs-up"
-              size={35}
-              color="green"
-
-            />
-          </TouchableOpacity>
+        <View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={[styles.button, styles.red]} onPress={() => { this.swiper.swipeLeft(); this.onSwipedLeft; }}>
+              <Entypo name="thumbs-down" size={35} style={{ marginBottom: -3 }} color="red" />
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.button, styles.orange]} onPress={() => { this.swiper.goBackFromLeft(); this.onRevert; }}>
+              <MaterialCommunityIcons name="reload" size={26} color="blue" />
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.button, styles.green]} onPress={() => { this.swiper.swipeRight(); this.onSwipedRight; }}>
+              <Entypo name="thumbs-up" size={35} color="green" />
+            </TouchableOpacity>
+          </View>
         </View>
 
       </Container>
@@ -154,12 +156,10 @@ export default class WorkoutScreen extends React.Component {
 const styles = StyleSheet.create({
 
   buttonContainer: {
-    width: "75%",
-    marginLeft: "auto",
-    marginRight: "auto",
+    width: "100%",
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-evenly',
+    marginTop: -50,
   },
   button: {
     shadowColor: 'rgba(0,0,0,0.3)',
@@ -189,6 +189,7 @@ const styles = StyleSheet.create({
     borderRadius: 75,
     borderWidth: 6,
     borderColor: '#01df8a',
+    marginBottom: 20
   },
   red: {
     width: 75,
@@ -197,5 +198,6 @@ const styles = StyleSheet.create({
     borderRadius: 75,
     borderWidth: 6,
     borderColor: '#fd267d',
+    marginBottom: 20
   }
 });

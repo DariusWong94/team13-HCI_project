@@ -1,9 +1,38 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { AppLoading, Asset, Font, Icon } from 'expo';
+import { AppLoading, Asset, Font, Icon, Permissions, Notifications } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 
+// async function register() {
+//   const { status } = await Permissions.getAsync(
+//     Permissions.NOTIFICATIONS
+//   );
+
+//   // only ask if permissions have not already been determined, because
+//   // iOS won't necessarily prompt the user a second time.
+//   if (status !== 'granted') {
+//     // Android remote notification permissions are granted during the app
+//     // install, so this will only ask on iOS
+//     alert("You need to enable permission in setting")
+//     return;
+//   }
+//   const token = await Notifications.getExpoPushTokenAsync();
+//   console.log(status, token);
+// }
+
+
+
 export default class App extends React.Component {
+
+  // componentWillMount() {
+  //   register();
+  //   this.listener = Notifications.addListener(this.listen)
+  // }
+  // componentDidMount() {
+  // }
+  // listen = ({ origin, data }) => {
+  //   console.log("cool data", origin, data)
+  // }
   state = {
     isLoadingComplete: false,
   };
@@ -46,7 +75,7 @@ export default class App extends React.Component {
   _handleLoadingError = error => {
     // In this case, you might want to report the error to your error
     // reporting service, for example Sentry
-    console.warn(error);
+    //console.warn(error);
   };
 
   _handleFinishLoading = () => {

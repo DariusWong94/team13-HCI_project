@@ -6,7 +6,8 @@ import Colors from '../constants/Colors';
 
 import MealScreen from '../screens/MealScreen';
 import WorkoutScreen from '../screens/WorkoutScreen';
-import FavouritesScreen from '../screens/FavouritesScreen'
+import FavouritesScreen from '../screens/FavouritesScreen';
+import FrontScreen from '../screens/FrontScreen';
 //profile
 import HomeScreen from '../screens/HomeScreen';
 
@@ -90,8 +91,6 @@ FavouritesStack.navigationOptions = {
   ),
 };
 
-
-
 const ProfileStack = createStackNavigator({
   Home: HomeScreen
 });
@@ -115,4 +114,7 @@ export default createBottomTabNavigator({
   WorkoutStack,
   FavouritesStack,
   ProfileStack,
+},
+{
+  initialRouteName: 'ProfileStack',
 });

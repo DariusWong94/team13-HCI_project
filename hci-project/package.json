@@ -24,6 +24,7 @@
     "react-native-dialog": "^5.4.0",
     "react-native-dialog-input": "^1.0.5",
     "react-native-image-slideshow": "^1.0.1",
+    "react-native-material-dropdown": "^0.11.1",
     "react-native-prompt": "^1.0.0",
     "react-native-router-flux": "^4.0.6",
     "react-native-swipe-cards": "^0.1.1",
