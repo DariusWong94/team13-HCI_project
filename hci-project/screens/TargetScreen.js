@@ -14,9 +14,7 @@ export default class TargetScreen extends Component {
     this.state = {
       modalTextState: "",
       modalVisible: false,
-      age: 0,
       Target: {
-        Age: 0,
         BMI: 0,
         Height: 0,
         Weight: 0,
